@@ -1,0 +1,2 @@
+# FDR
+Result$P.adj.fdr=p.adjust(Result$rawP,method = 'fdr')
