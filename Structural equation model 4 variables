@@ -1,0 +1,52 @@
+# Structural equation model 4 variables
+library(lavvan)
+mydata <- Analysis_SEM_Exposure_Mediator_Outcome
+
+model0 <- '
+         A=~1*Score
+         D=~1*Cog1+Cog2+Cog3+Cog4
+
+         D~a1*A+Cov1+Cov2+Cov3+Cov4
+'
+fit0 <- sem(model0,data = mydata, se="boot", bootstrap = 5000)
+summary(fit0,standardized=T)
+fitmeasures(fit0,c('cfi','rmsea','srmr'),baseline.model = NULL)
+
+model1 <- '
+         A=~1*Score
+         B=~1*Exposure
+         C=~1*Blood1+Blood2+Blood3
+         D=~1*Cog1+Cog2+Cog3+Cog4
+         
+         D~a1*A+c1*C+Cov1+Cov2+Cov3+Cov4
+         C~b2*B+Cov1+Cov2+Cov3+Cov4
+         B~a3*A+Cov1+Cov2+Cov3+Cov4
+'
+fit1 <- sem(model1,data = mydata, se="boot", bootstrap = 5000)
+summary(fit1,standardized=T)
+fitmeasures(fit1,c('cfi','rmsea','srmr'),baseline.model = NULL)
+
+model2 <- '
+         A=~1*Score
+         B=~1*Exposure
+         D=~1*Cog1+Cog2+Cog3+Cog4
+        
+        
+         D~a1*A+b1*B+Cov1+Cov2+Cov3+Cov4
+         B~a3*A+Cov1+Cov2+Cov3+Cov4
+'
+fit2 <- sem(model2,data = mydata, se="boot", bootstrap = 5000)
+summary(fit2,standardized=T)
+fitmeasures(fit2,c('cfi','rmsea','srmr'),baseline.model = NULL)
+
+model3 <- '
+         A=~1*Score
+         C=~1*Blood1+Blood2+Blood3
+         D=~1*Cog1+Cog2+Cog3+Cog4 
+         
+         D~a1*A+c1*C+Cov1+Cov2+Cov3+Cov4
+         C~a3*A+Cov1+Cov2+Cov3+Cov4
+'
+fit3 <- sem(model3,data = mydata, se="boot", bootstrap = 5000)
+summary(fit3,standardized=T)
+fitmeasures(fit3,c('cfi','rmsea','srmr'),baseline.model = NULL)
