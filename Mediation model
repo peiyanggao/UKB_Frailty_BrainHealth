@@ -1,0 +1,12 @@
+# Mediation model
+library(mediation)
+mydata <- Analysis_Mediation_Exposure_Mediator_Outcome
+
+lm1_main_model <- lm(Outcome~Exposure+Cov1+Cov2,data = mydata)
+summary(lm1_main_model)
+lm2_mediator_model <- lm(Mediator~Exposure+Cov1+Cov2,data = mydata)
+summary(lm2_mediator_model)
+lm3_model <- lm(Outcome~Mediator+Cov1+Cov2,data = mydata)
+summary(lm3_model)
+lm4_gather_model <- lm(Outcome~Exposure+Mediator+Cov1+Cov2,data = mydata)
+result_mediate <- mediate(lm2_mediator_model,lm4_gather_model,sims = 5000,treat = Exposure,mediator = Mediator)
