@@ -1,0 +1,19 @@
+# Cross-lagged panel model
+library(lavvan)
+mydata <- Analysis_CLPM_Exposure_Outcome
+
+model <- '
+   A.bl =~ Exposure.bl
+   A.fo =~ Exposure.fo
+   B.bl =~ Outcome.bl
+   B.fo =~ Outcome.fo
+
+   A.fo ~ b1 * A.bl  + b2 * B.bl
+   B.fo ~ b3 * A.bl  + b4 * B.bl
+
+   A.bl ~~ B.bl
+   A.fo ~~ B.fo
+   '
+fit <- sem(model, data = mydata ,se="boot",bootstrap = 5000)
+summary(fit,fit.measures=T,standardized = TRUE)
+fitmeasures(fit,c('cfi','rmsea','srmr'),baseline.model = NULL)
