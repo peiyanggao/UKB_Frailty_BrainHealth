@@ -1,4 +1,5 @@
 # Cox proportional hazard model
+library(survival)
 mydata <- Analysis_Cox_Exposure_Outcome
 
 fit <- coxph(Surv(Outcome_period,Outcome_status==1) ~ Exposure +Cov1+Cov2+Cov3+Cov4+Cov5+Cov6+Cov7+Cov8, data = mydata)
