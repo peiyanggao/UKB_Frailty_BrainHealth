@@ -1,0 +1,20 @@
+# Structural equation model full frame
+library(lavvan)
+mydata <- Analysis_SEM_Exposure_Mediator_Outcome
+
+model <- '
+     A=~1*Score
+     B=~1*Exposure
+     C=~1*Blood1+Blood2+Blood3
+     D=~1*Protein1+Protein2+Protein3+Protein4+Protein5+Protein6
+     E=~1*Disease1+Disease2+Disease3+Disease4+Disease5+Disease6
+
+     E~A+B+C+D +Cov1+Cov2+Cov3+Cov4
+     B~A +Cov1+Cov2+Cov3+Cov4
+     C~A+B +Cov1+Cov2+Cov3+Cov4
+     D~A+B +Cov1+Cov2+Cov3+Cov4
+     C~~D
+'
+fit <- sem(model,data = mydata,se='boot', bootstrap = 5000)
+summary(fit,standardized=T)
+fitmeasures(fit,c('cfi','rmsea','srmr'),baseline.model = NULL)
