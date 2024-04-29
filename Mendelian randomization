@@ -1,1 +1,33 @@
 # Mendelian randomization
+trait1.exposure_data <- read_exposure_data('Exposure_gwas_result.tsv.gz',
+                                           sep = '\t',
+                                           snp_col = 'ID',
+                                           beta_col = 'BETA',
+                                           se_col = 'SE',
+                                           eaf_col = 'A1_FREQ',
+                                           effect_allele_col = 'A1',
+                                           other_allele_col = 'AX',
+                                           samplesize_col = 'OBS_CT',
+                                           pval_col = 'P',
+                                           chr_col = '#CHROM',
+                                           pos_col = 'POS'
+)
+trait1.exposure_data <- trait1.exposure_data[trait1.exposure_data$pval.exposure<1e-6,]
+trait1.exposure_data_clumped<- clump_data(trait1.exposure_data)
+trait1.trait2.outcome_data <- read_outcome_data(snps = trait1.exposure_data_clumped$SNP,
+                                                filename = 'Outcome_gwas_result.csv',
+                                                sep='\t',
+                                                snp_col = 'rsids',
+                                                beta_col = 'beta',
+                                                se_col = 'sebeta',
+                                                eaf_col = 'af_alt',
+                                                effect_allele_col = 'ref',
+                                                other_allele_col = 'alt',
+                                                pval_col = 'pval',
+                                                chr_col = '#chrom',
+                                                pos_col = 'pos',
+                                                gene_col = 'nearest_genes'
+)
+trait1.trait2.dat <- harmonise_data(exposure_dat = trait1.exposure_data_clumped, outcome_dat = trait1.trait2.outcome_data)
+trait1.trait2.results <- mr(trait1.trait2.dat)
+RESULT_MR_Exposure_Outcome <- trait1.trait2.results
