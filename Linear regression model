@@ -1,5 +1,5 @@
 # Linear regression model
-mydata <- Analysis_Exposure_Outcome
+mydata <- Analysis_LM_Exposure_Outcome
 
 fit <- lm(Outcome ~ Exposure + Cov1+Cov2+Cov3+Cov4+Cov5+Cov6+Cov7+Cov8, data=mydata)
 summary(fit)
